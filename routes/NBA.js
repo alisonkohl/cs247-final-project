@@ -1,5 +1,4 @@
 var request = require("request");
-var xmldoc = require("xmldoc");
 
 exports.loadGames = function(req, res){
 	request({
