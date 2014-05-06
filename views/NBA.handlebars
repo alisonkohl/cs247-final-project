@@ -1,0 +1,10 @@
+<h1>Today's NBA Games</h1>
+<ul style="list-style:none">
+  {{#each games}}
+  	<li>
+  		<a href="/NBA/board?away={{away}}&home={{home}}&date={{date}}">
+  			{{away}} at {{home}}
+  		</a>
+  	</li>
+  {{/each}}
+ </ul>
