@@ -43,7 +43,7 @@ app.use(app.router);
 // Declare your routes here
 app.get('/', routes.index);
 app.get('/NBA', NBA.loadGames);
-app.get('/NBA/board', board.displayBoard);
+app.get('/board', board.displayBoard);
 
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {

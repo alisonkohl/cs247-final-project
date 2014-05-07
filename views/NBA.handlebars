@@ -1,10 +1,19 @@
 <h1>Today's NBA Games</h1>
-<ul style="list-style:none">
-  {{#each games}}
+<ul style="list-style:none" id="gamelist"></ul>
+
+<!--<script type="text/javascript">
+	var parser = new DOMParser();
+	var xmlDoc = parser.parseFromString({{{xmlData}}}, "text/xml");
+	var games = xmlDoc.getElementsByTagName("game");
+	var date = xmlDoc.getElementsByTagName("daily-schedule")[0];
+	document.write(date);
+</script>-->
+
+{{#each games}}
   	<li>
-  		<a href="/NBA/board?away={{away}}&home={{home}}&date={{date}}">
+  		<a href="/board?away={{away}}&home={{home}}&date={{date}}">
   			{{away}} at {{home}}
   		</a>
   	</li>
-  {{/each}}
- </ul>
+{{/each}}
+

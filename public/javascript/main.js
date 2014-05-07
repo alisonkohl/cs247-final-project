@@ -1,23 +1,30 @@
-// Initial code by Borui Wang, updated by Graham Roth
-// For CS247, Spring 2014
+function GetUrlValue(VarSearch){
+    var SearchString = window.location.search.substring(1);
+    var VariableArray = SearchString.split('&');
+    for(var i = 0; i < VariableArray.length; i++){
+        var KeyValuePair = VariableArray[i].split('=');
+        if(KeyValuePair[0] == VarSearch){
+            return KeyValuePair[1];
+        }
+    }
+}
 
 (function() {
 
-  var first_video_blob = null;
-  var second_video_blob = null;
   var cur_video_blob = null;
   var fb_instance;
-  var numVideosRecorded = 0;
+  var mediaRecorder;
+  var video_container;
+  var fb_instance_stream
 
   $(document).ready(function(){
     connect_to_chat_firebase();
     connect_webcam();
   });
-  
 
   function connect_to_chat_firebase(){
     /* Include your Firebase link here!*/
-    fb_instance = new Firebase("https://akohl-p3-v2.firebaseio.com");
+    fb_instance = new Firebase("https://radiant-fire-2543.firebaseio.com");
 
     // generate new chatroom id or use existing id
     var url_segments = document.location.href.split("/#");
@@ -26,24 +33,46 @@
     }else{
       fb_chat_room_id = Math.random().toString(36).substring(7);
     }
-    display_msg({m:"Share this url with your friend to join this chat: "+ document.location.origin+"/#"+fb_chat_room_id,c:"red"})
+    //display_msg({m:"Share this url with your friend to join this chat: "+ document.location.origin+"/#"+fb_chat_room_id,c:"red"});
+    //display_msg({m:"Type lol, :), or :( to share a sequence of three short videos. Plan accordingly!",c:"red"})
 
     // set up variables to access firebase data structure
-    var fb_new_chat_room = fb_instance.child('chatrooms').child(fb_chat_room_id);
+    var home = GetUrlValue("home");
+    var away = GetUrlValue("away");
+    var date = GetUrlValue("date");
+    var fb_new_chat_room = fb_instance.child('chatrooms').child(home + away + date);
+    //var fb_new_chat_room = fb_instance.child('chatrooms').child(fb_chat_room_id);
     var fb_instance_users = fb_new_chat_room.child('users');
-    var fb_instance_stream = fb_new_chat_room.child('stream');
+    fb_instance_stream = fb_new_chat_room.child('stream');
     var my_color = "#"+((1<<24)*Math.random()|0).toString(16);
 
     // listen to events
     fb_instance_users.on("child_added",function(snapshot){
-      display_msg({m:snapshot.val().name+" joined the room",c: snapshot.val().c});
+      var id = snapshot.name();
+      display_msg(id, {m:snapshot.val().name+" joined the room",c: snapshot.val().c});
     });
     fb_instance_stream.on("child_added",function(snapshot){
-      display_msg(snapshot.val());
+      var id = snapshot.name();
+      display_msg(id, snapshot.val());
+    });
+
+    fb_instance_stream.on("child_changed", function(snapshot, prevChildName){
+      var ratingString = snapshot.val().r;
+      if (ratingString.charAt(0) == '-') {
+        ratingString = ratingString.substring(1);
+      }
+      console.log("ratingString is: " + ratingString);
+      var indexOfHyphen = ratingString.indexOf("-");
+      var id = ratingString.substring(indexOfHyphen);
+      console.log("id in child changed function is: " + id);
+      var rating = ratingString.substring(0, indexOfHyphen);
+      console.log("rating for this id is: " + rating);
+      document.getElementById(id).innerHTML = rating;
     });
 
     // block until username is answered
-    var username = window.prompt("Welcome, warrior! please declare your name?");
+    console.log("before username prompt");
+    var username = window.prompt("Hi, please let me know what your name is");
     if(!username){
       username = "anonymous"+Math.floor(Math.random()*1111);
     }
@@ -51,59 +80,90 @@
     $("#waiting").remove();
 
     // bind submission box
+    var text;
     $("#submission input").keydown(function( event ) {
+      text = $(this).val();
       if (event.which == 13) {
-        fb_instance_stream.push({m:username+": " +$(this).val(), c: my_color});
+        fb_instance_stream.push({m:username+": " +text, c: my_color});
         $(this).val("");
       }
-    });
+      });
+    //$("#submission button").onclick(function( event ) {
+      document.getElementById("recordBtn").onclick=function() {
+      //text = $(this).val();
+      //if (event.which == 13) {
+        //if(has_emotions($(this).val().toUpperCase())){
+          //fb_instance_stream.push({m:username+": " +text, c: my_color});
+            var i = 0;
+            var second_counter = document.getElementById('second_counter');
+            var count = setTimeout(function(){
+              second_counter.innerHTML = ""; 
+              second_counter.innerHTML = "Talk Some Trash!";
+              mediaRecorder.start(7000);
 
-    $("#reactions").on('click', '.reaction', function() {
-      var videoIndex = $(this).index();
-      if (videoIndex == 0) fb_instance_stream.push({m:username+": " +$(this).val(), v:first_video_blob, c: my_color});
-      if (videoIndex == 1) fb_instance_stream.push({m:username+": " +$(this).val(), v:second_video_blob, c: my_color});
-      if (videoIndex == 2) fb_instance_stream.push({m:username+": " +$(this).val(), v:cur_video_blob, c: my_color});
-    });
-  }
+              mediaRecorder.ondataavailable = function (blob) {
+                  console.log("new data available!");
 
-  function sleep(ms) {
-    var currentTime = new Date().getTime();
-    while (currentTime + ms >= new Date().getTime()) {
-    }
-  }
+                  blob_to_base64(blob,function(b64_data){
+                    cur_video_blob = b64_data;
+                  });
+                  console.log("test");
 
-  function addToStream(data) {
-    var video = document.createElement("video");
-    video.className = "reaction";
-    video.autoplay = true;
-    video.controls = false; // optional
-    video.loop = true;
-    video.width = 120;
+                };
 
-    var source = document.createElement("source");
-    source.src =  URL.createObjectURL(base64_to_blob(data));
-    source.type =  "video/webm";
+              console.log('before');
 
-    video.appendChild(source);
+              //$("#stopButton").onclick = function() {
+              document.getElementById("stopButton").onclick = function() {
+                console.log("in on click");
+                mediaRecorder.stop();
+                fb_instance_stream.push({m:username, v:cur_video_blob, c: my_color, r: 0});
+                console.log('after');
+                second_counter.innerHTML = "";
+                i++;
+                //if(i >=3){
+                clearInterval(count);
 
-    // for gif instead, use this code below and change mediaRecorder.mimeType in onMediaSuccess below
-    // var video = document.createElement("img");
-    // video.src = URL.createObjectURL(base64_to_blob(data.v));
-    var reactions = document.getElementById("reactions");
-    if (numVideosRecorded >= 3) {
-      reactions.removeChild(reactions.firstChild);
-    }
-    reactions.appendChild(video);
-    numVideosRecorded++;
-    scroll_to_bottom(0);
-  }
+              };
 
+              setTimeout(function(){
+                
+                fb_instance_stream.push({m:username, v:cur_video_blob, c: my_color, r: 0});
+                console.log('after');
+                second_counter.innerHTML = "";
+                i++;
+                //if(i >=3){
+                clearInterval(count);
+                //}
+              },7500);
+              //var j = 2;
+              /*if(i <2){
+              var countdown = setInterval(function(){
+                second_counter.innerHTML = j;
+                j--;
+                if(j <= 0){
+                  clearInterval(countdown);
+                }
+              },1000);
+            }*/
+            }, 500); 
+        //}else{
+        //  fb_instance_stream.push({m:username+": " +text, c: my_color});
+        //}
+        $(this).val("");
+      //}
+    };
+}
 
   // creates a message node and appends it to the conversation
-  function display_msg(data){
+  function display_msg(id, data){
     $("#conversation").append("<div class='msg' style='color:"+data.c+"'>"+data.m+"</div>");
     if(data.v){
       // for video element
+      
+      console.log("id is: " + id);
+      console.log("data.r is: " + data.r);
+
       var video = document.createElement("video");
       video.autoplay = true;
       video.controls = false; // optional
@@ -117,11 +177,48 @@
       video.appendChild(source);
 
       // for gif instead, use this code below and change mediaRecorder.mimeType in onMediaSuccess below
-      // var video = document.createElement("img");
-      // video.src = URL.createObjectURL(base64_to_blob(data.v));
+      //var video = document.createElement("img");
+       //video.src = URL.createObjectURL(base64_to_blob(data.v));
 
-      document.getElementById("conversation").appendChild(video);
-    }
+       document.getElementById("conversation").appendChild(video);
+       var yeahButton = document.createElement("button");
+       var booButton = document.createElement("button");
+       var rating = document.createElement("h6");
+
+       yeahButton.setAttribute("id", "yea" + id);
+       booButton.setAttribute("id", "boo" + id);
+       rating.setAttribute("id", id);
+
+       yeahButton.innerHTML = "YEAH!";
+       booButton.innerHTML = "BOO!";
+       rating.innerHTML = data.r;
+
+       yeahButton.onclick = function() {
+          var currID = yeahButton.id.substring(3);
+          var ratingElement = document.getElementById(currID);
+          var rating = parseInt(ratingElement.innerHTML);
+          var newRating = rating + 1;
+          var ratingString = newRating.toString() + currID;
+          fb_instance_stream.child(currID).update({r: ratingString});
+          ratingElement.innerHTML = (rating + 1).toString();
+
+       }
+
+       booButton.onclick = function() {
+          var currID = booButton.id.substring(3);
+          var ratingElement = document.getElementById(currID);
+          var rating = parseInt(ratingElement.innerHTML);
+          var newRating = rating - 1;
+          var ratingString = newRating.toString() + currID;
+          fb_instance_stream.child(currID).update({r: ratingString});
+          ratingElement.innerHTML = (rating - 1).toString();
+       }
+       
+       document.getElementById("conversation").appendChild(yeahButton);
+       document.getElementById("conversation").appendChild(rating);
+       document.getElementById("conversation").appendChild(booButton);
+
+     }
     // Scroll to the bottom every time we display a new message
     scroll_to_bottom(0);
   }
@@ -137,7 +234,7 @@
     // we're only recording video, not audio
     var mediaConstraints = {
       video: true,
-      audio: false
+      audio: true
     };
 
     // callback for when we get video stream from user.
@@ -150,48 +247,48 @@
       webcam_stream.innerHTML = "";
       // adds these properties to the video
       video = mergeProps(video, {
-          controls: false,
-          width: video_width,
-          height: video_height,
-          src: URL.createObjectURL(stream)
+        controls: false,
+        width: video_width,
+        height: video_height,
+        src: URL.createObjectURL(stream)
       });
       video.play();
       webcam_stream.appendChild(video);
 
+      // counter
+      /*
+      var time = 0;
+      var second_counter = document.getElementById('second_counter');
+      var second_counter_update = setInterval(function(){
+        second_counter.innerHTML = time++;
+      },1000);*/
+
       // now record stream in 5 seconds interval
-      var video_container = document.getElementById('video_container');
-      var mediaRecorder = new MediaStreamRecorder(stream);
+      video_container = document.getElementById('video_container');
+      mediaRecorder = new MediaStreamRecorder(stream);
       var index = 1;
 
       mediaRecorder.mimeType = 'video/webm';
-      // mediaRecorder.mimeType = 'image/gif';
+      //mediaRecorder.mimeType = 'image/gif';
       // make recorded media smaller to save some traffic (80 * 60 pixels, 3*24 frames)
       mediaRecorder.video_width = video_width/2;
       mediaRecorder.video_height = video_height/2;
 
-      mediaRecorder.ondataavailable = function (blob) {
+     /* mediaRecorder.ondataavailable = function (blob) {
           //console.log("new data available!");
           video_container.innerHTML = "";
 
           // convert data into base 64 blocks
           blob_to_base64(blob,function(b64_data){
-            if (numVideosRecorded == 0) first_video_blob = b64_data;
-            else if (numVideosRecorded == 1) second_video_blob = b64_data;
-            else if (numVideosRecorded == 2) cur_video_blob = b64_data;
-            else {
-              first_video_blob = second_video_blob;
-              second_video_blob = cur_video_blob;
-              cur_video_blob = b64_data;
-            }
-            addToStream(b64_data);
+            cur_video_blob = b64_data;
           });
         };
-        setInterval( function() {
-          mediaRecorder.stop();
-          mediaRecorder.start(3000);
-        }, 3000 );
-      console.log("connect to media stream!");
-    }
+      /*setInterval( function() {
+        mediaRecorder.stop();
+        mediaRecorder.start(3000);
+      }, 3000 );*/
+console.log("connect to media stream!");
+}
 
     // callback if there is an error when we try and get the video stream
     var onMediaError = function(e) {
@@ -204,7 +301,7 @@
 
   // check to see if a message qualifies to be replaced with video.
   var has_emotions = function(msg){
-    var options = ["lol",":)",":("];
+    var options = ["TRASH"];
     for(var i=0;i<options.length;i++){
       if(msg.indexOf(options[i])!= -1){
         return true;
