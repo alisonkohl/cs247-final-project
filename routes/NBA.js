@@ -21,12 +21,6 @@ exports.loadGames = function(req, res){
 			var home = games[i].getElementsByTagName("home")[0].getAttribute("name");
 			gamesArr.push({"home": home, "away": away, "date": date});
 		}
-		//console.log(games);
-		/*var gamesArr = [];
-		gamesArr.push({"home": "Oklahoma City Thunder", "away": "Los Angeles Clippers", "date": "5-5-2014"});
-		gamesArr.push({"home": "Indiana Pacers", "away": "Washington Wizards", "date": "5-5-2014"});*/
-		//res.render('NBA', { 'games': gamesArr });
-		//res.render('NBA', { 'xmlData': body });
 		res.render('NBA', { 'games': gamesArr });
 	});
 };

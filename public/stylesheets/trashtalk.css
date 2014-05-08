@@ -1,0 +1,30 @@
+h1 {
+  font: 72px "Graduate", Helvetica, Arial, sans-serif;
+  text-align: center;
+  color: white;
+}
+
+h4 {
+  font: 36px "Graduate", Helvetica, Arial, sans-serif;
+  text-align: center;
+  color: white;
+}
+
+ul {
+  font: 48px "Graduate", Helvetica, Arial, sans-serif;
+  text-align: center;
+  color: white;
+  list-style-type: none;
+}
+
+a {
+  color: white;
+}
+
+a:visited {
+  color: white;
+}
+
+body {
+  background-color: #192C80;
+}
