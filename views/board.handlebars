@@ -1,19 +1,50 @@
-<link rel="stylesheet" href='/stylesheets/main.css'>
-<script src='https://cdn.firebase.com/js/client/1.0.6/firebase.js'></script>
-<script src='javascript/jquery-1.11.0.min.js'></script>
-<script src='javascript/MediaStreamRecorder.js'></script>
-<script src='javascript/main.js'></script>
+<head>
+	<link rel="stylesheet" href='/stylesheets/trashtalk.css'>
+	<link href='http://fonts.googleapis.com/css?family=Graduate' rel='stylesheet' type='text/css'>
+	<script src='https://cdn.firebase.com/js/client/1.0.6/firebase.js'></script>
+	<script src='javascript/jquery-1.11.0.min.js'></script>
+	<script src='javascript/MediaStreamRecorder.js'></script>
+	<script src='javascript/main.js'></script>
+	<script src="http://www.WebRTC-Experiment.com/RecordRTC.js"></script>
+</head>
 
-<h1>{{gameInfo.away}} at {{gameInfo.home}}</h1>
-<h2>{{gameInfo.date}}</h2>
+<body>
+	<div style="width: 100%;">
+	<div id="leftdiv">
+		<div id="conversation"></div>
+		<!--<div id="submission">
+			<input type="text" placeholder="say something...">
+		</div>-->
+	</div>
+	<div id="rightdiv">
+		<!--<iframe id="iframe" src="/play?id={{gameInfo.id}}"></iframe>-->
+		<h4>{{gameInfo.away}} at {{gameInfo.home}}</h4>
+		<h6>Last Play: {{gameInfo.play}}</h6>
+		<div id="webcam">
+			<div id="webcam_stream"></div>
+			<br/>
+			<div>
+				<button type="button" id="recordBtn">Talk Trash!</button>
+				<button type="button" id="stopButton" >Ease up</button>
+			</div>
+		</div>
+	</div>
 
-<div id="waiting">Connecting to chat server...</div>
-<div id="second_counter"></div>
-<div id="conversation"></div>
-<div id="submission">
-	<input type="text" placeholder="say something..">
-	<button type="button" id="recordBtn">Talk Trash!</button>
-	<button type="button" id="stopButton" >Ease up</button>
-</div>
-<div id="webcam_stream"></div>
-<div id="video_container"></div>
+</body>
+
+
+
+<!--<body>
+	<h1>{{gameInfo.away}} at {{gameInfo.home}}</h1>
+
+	<div id="waiting">Connecting to chat server...</div>
+	<div id="second_counter"></div>
+	<div id="conversation"></div>
+	<div id="submission">
+		<input type="text" placeholder="say something..">
+		<button type="button" id="recordBtn">Talk Trash!</button>
+		<button type="button" id="stopButton" >Ease up</button>
+	</div>
+	<div id="webcam_stream"></div>
+	<div id="video_container"></div>
+</body>-->

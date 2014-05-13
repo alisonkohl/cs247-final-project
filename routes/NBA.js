@@ -17,9 +17,10 @@ exports.loadGames = function(req, res){
 		var date = doc.getElementsByTagName("daily-schedule")[0].getAttribute("date");
 		var games = doc.getElementsByTagName("game");
 		for (var i = 0; i < games.length; i++) {
+			var id = games[i].getAttribute("id");
 			var away = games[i].getElementsByTagName("away")[0].getAttribute("name");
 			var home = games[i].getElementsByTagName("home")[0].getAttribute("name");
-			gamesArr.push({"home": home, "away": away, "date": date});
+			gamesArr.push({"id": id, "home": home, "away": away, "date": date});
 		}
 		res.render('NBA', { 'games': gamesArr });
 	});
