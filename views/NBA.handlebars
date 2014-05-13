@@ -2,14 +2,15 @@
 	<link rel="stylesheet" href='/stylesheets/trashtalk.css'>
 	<link href='http://fonts.googleapis.com/css?family=Graduate' rel='stylesheet' type='text/css'>
 </head>
+<body class="blue">
+	<h1>Today's NBA Games</h1>
+	<ul>
 
-<h1>Today's NBA Games</h1>
-<ul>
+		{{#each games}}
+		  	<li>
+		  		<a href="/board?id={{id}}&away={{away}}&home={{home}}&date={{date}}">{{away}} at {{home}}</a>
+		  	</li>
+		{{/each}}
 
-	{{#each games}}
-	  	<li>
-	  		<a href="/board?id={{id}}&away={{away}}&home={{home}}&date={{date}}">{{away}} at {{home}}</a>
-	  	</li>
-	{{/each}}
-
-</ul>
+	</ul>
+</body>
