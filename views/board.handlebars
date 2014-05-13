@@ -10,16 +10,19 @@
 
 <body>
 	<div style="width: 100%;">
-	<div id="leftdiv">
+	<div id="leftdiv" class="blue">
 		<div id="conversation"></div>
 		<!--<div id="submission">
 			<input type="text" placeholder="say something...">
 		</div>-->
 	</div>
-	<div id="rightdiv">
+	<div id="rightdiv" class="red">
 		<!--<iframe id="iframe" src="/play?id={{gameInfo.id}}"></iframe>-->
 		<h4>{{gameInfo.away}} at {{gameInfo.home}}</h4>
-		<h6>Last Play: {{gameInfo.play}}</h6>
+		<div>
+			<iframe id="iframe" src="/play?id={{gameInfo.id}}" frameBorder="0"></iframe>
+		</div>
+		<!--<h6>Last Play: {{gameInfo.play}}</h6>-->
 		<div id="webcam">
 			<div id="webcam_stream"></div>
 			<br/>

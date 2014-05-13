@@ -31,11 +31,22 @@ a:visited {
   color: white;
 }
 
-body {
+.red {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #E30E0E;
+}
+
+.blue {
   margin: 0;
   padding: 0;
   overflow: hidden;
   background-color: #192C80;
+}
+
+iframe {
+  margin: 15px;
 }
 
 .buttonsTable {
@@ -75,6 +86,10 @@ body {
   float: right;
   background-color: #E30E0E;
   overflow-y:hidden;
+}
+
+#rightdiv div {
+  text-align: center;
 }
 
 #webcam_stream {

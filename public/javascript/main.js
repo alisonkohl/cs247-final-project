@@ -340,19 +340,19 @@ var base64_to_blob = function(base64) {
   return blob;
 };
 
-/*window.onload = function() {
-    window.setInterval(function() {
-    update();
+window.setInterval(function() {
+    updatePlay();
   }, 5000);
-};
+
 
 
 
 function updatePlay(result) {
-  console.log("working");
+  var iframe = document.getElementById('iframe');
+  iframe.src = iframe.src;
 };
 
-function update() {
+/*function update() {
 $.ajax({
     type: "GET",
     url: "https://api.sportsdatallc.org/nba-t3/games/' + id + '/pbp.xml?api_key=rqukdyxzrs73sp4zrgg3v98j",
