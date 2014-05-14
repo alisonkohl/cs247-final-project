@@ -4,9 +4,6 @@ var ready = 0;
 var username;
 var my_color;
 
-//var request = require("request");
-//var DOMParser = require('xmldom').DOMParser;
-
 function GetUrlValue(VarSearch){
     var SearchString = window.location.search.substring(1);
     var VariableArray = SearchString.split('&');
