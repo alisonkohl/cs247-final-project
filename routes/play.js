@@ -15,7 +15,9 @@ exports.displayPlay = function(req, res){
 		var doc = new DOMParser().parseFromString(body, 'text/xml');
 		descriptions = doc.getElementsByTagName("description");
 		var numPlays = descriptions.length;
-		var play = descriptions[numPlays-1].lastChild.nodeValue;
+		var play;
+		if (numPlays > 0) play = descriptions[numPlays-1].lastChild.nodeValue;
+		else play = "No current play";
 		res.render('play', {'play': play});
 	});
 
