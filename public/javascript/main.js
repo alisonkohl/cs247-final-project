@@ -212,21 +212,24 @@ function display_msg(id, data){
     var div = document.createElement("div");
 
     var usernameDiv = document.createElement("div");
-    usernameDiv.style.color = data.c;
+    usernameDiv.style.color = "white";
     usernameDiv.innerHTML = data.m;
-
+    usernameDiv.setAttribute("class", "video_info")
+    usernameDiv.setAttribute("width", "240");
+    usernameDiv.style.paddingLeft="0px";
+    usernameDiv.style.paddingRight="0px";
 
     div.appendChild(usernameDiv);
     div.appendChild(video);
     //div.appendChild(playButton);
 
-    var buttonsTable = document.createElement("table");
+    /*var buttonsTable = document.createElement("table");
     buttonsTable.setAttribute("width", "240");
     var playRow = document.createElement("tr");
     var playCell = document.createElement("td");
     playCell.appendChild(playButton);
     playRow.appendChild(playCell);
-    buttonsTable.appendChild(playRow);
+    buttonsTable.appendChild(playRow);*/
 
     if (data.a) {
       var audioSrc = URL.createObjectURL(base64_to_blob(data.a));
@@ -251,6 +254,7 @@ function display_msg(id, data){
      yeahButton.setAttribute("id", "yea" + id);
      booButton.setAttribute("id", "boo" + id);
      rating.setAttribute("id", id);
+     rating.setAttribute("class", "video_info");
 
      yeahButton.innerHTML = "YEAH!";
      booButton.innerHTML = "BOO!";
@@ -287,17 +291,14 @@ function display_msg(id, data){
      buttonsDiv.appendChild(booButton);
      div.appendChild(buttonsDiv);*/
 
-     var rightVideoDiv = document.createElement("div");
+    var rightVideoDiv = document.createElement("div");
     rightVideoDiv.setAttribute("float", "right");
     rightVideoDiv.setAttribute("width", "50px");
     rightVideoDiv.appendChild(playButton);
-
     rightVideoDiv.appendChild(yeahButton);
-     rightVideoDiv.appendChild(rating);
-     rightVideoDiv.appendChild(booButton);
-     div.appendChild(rightVideoDiv);
-
-    div.appendChild(buttonsTable);
+    rightVideoDiv.appendChild(booButton);
+    rightVideoDiv.appendChild(rating);
+    div.appendChild(rightVideoDiv);
    $("#conversation").append(div);
 
   }
