@@ -119,8 +119,10 @@ function connect_to_chat_firebase(){
 
     fb_instance_stream.on("child_changed", function(snapshot, prevChildName){
       var ratingString = snapshot.val().r;
+      var isNeg = false;
       if (ratingString.charAt(0) == '-') {
         ratingString = ratingString.substring(1);
+        var isNeg = true;
       }
       console.log("ratingString is: " + ratingString);
       var indexOfHyphen = ratingString.indexOf("-");
@@ -128,6 +130,7 @@ function connect_to_chat_firebase(){
       console.log("id in child changed function is: " + id);
       var rating = ratingString.substring(0, indexOfHyphen);
       console.log("rating for this id is: " + rating);
+      if (isNeg === true) rating = "-" + rating;
       document.getElementById(id).innerHTML = rating;
     });
 
