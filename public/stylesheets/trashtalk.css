@@ -49,6 +49,15 @@ a:visited {
   background-color: #192C80;
 }
 
+.video_approve {
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  top: 100px;
+  left: 50px;
+  background-color: white;
+}
+
 .video_info {
   font: 24px "Graduate", Helvetica, Arial, sans-serif;
   text-align: center;

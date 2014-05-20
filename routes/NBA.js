@@ -21,8 +21,8 @@ exports.loadGames = function(req, res){
 			var id = games[i].getAttribute("id");
 			var away = games[i].getElementsByTagName("away")[0].getAttribute("name");
 			var home = games[i].getElementsByTagName("home")[0].getAttribute("name");
-			gamesArr.push({"id": id, "home": home, "away": away, "date": date});
+			gamesArr.push({'league': "NBA", "id": id, "home": home, "away": away, "date": date});
 		}
-		res.render('NBA', { 'games': gamesArr });
+		res.render('NBA', {'games': gamesArr });
 	});
 };

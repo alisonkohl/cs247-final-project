@@ -25,7 +25,9 @@ $(document).ready(function(){
     };
     $("#stopButton").click(function() {
       var videoBase64;
+      var savedVideoURL;
       recordRTC_Video.stopRecording(function(videoURL) {
+        savedVideoURL = videoURL;
         datauri_to_blob(videoURL,function(blob){
           blob_to_base64(blob,function(base64){
             videoBase64 = base64;
@@ -36,7 +38,44 @@ $(document).ready(function(){
       recordRTC_Audio.stopRecording(function(audioURL) {
         datauri_to_blob(audioURL,function(blob){
           blob_to_base64(blob,function(base64){
-            fb_instance_stream.push({m:username, v:videoBase64, a:base64, c: my_color, r: 0});
+            var approvalDiv = document.createElement('div');
+            approvalDiv.setAttribute("class", "video_approve");
+            approvalDiv.setAttribute("id", "videoplaybackdiv");
+            $('body').append(approvalDiv);
+            $('#videoplaybackdiv').append("<video id='videoplayback' src='"+savedVideoURL+"'></video>");
+            $('#videoplaybackdiv').append("<audio id='audioplayback' src='"+audioURL+"'></audio>");
+            var approvalPlayButton = document.createElement("button");
+            approvalPlayButton.setAttribute("id", "approval_play");
+            approvalPlayButton.innerHTML = "Play";
+
+            approvalPlayButton.onclick = function() {
+              setTimeout(function(){
+                document.getElementById("videoplayback").play();
+                setTimeout(function(){
+                  document.getElementById("audioplayback").play(); // delay 500 seconds for audio, it worked well on my machine
+                },620);
+              },500);
+            }
+
+            $('#videoplaybackdiv').append(approvalPlayButton);
+
+            var approveButton = document.createElement("button");
+            approveButton.innerHTML = "Approve";
+            //approveButton.setAttribute("id", "approveButton");
+            approveButton.onclick = function() {
+              fb_instance_stream.push({m:username, v:videoBase64, a:base64, c: my_color, r: 0});
+              $('#videoplaybackdiv').remove();
+            }
+            $('#videoplaybackdiv').append(approveButton);
+
+            var rejectButton = document.createElement("button");
+            rejectButton.innerHTML = "Reject";
+            rejectButton.onclick = function() {
+              $('#videoplaybackdiv').remove();
+            }
+            $('#videoplaybackdiv').append(rejectButton);
+            //add to onclick for accept
+            //fb_instance_stream.push({m:username, v:videoBase64, a:base64, c: my_color, r: 0});
           });
         });
       });
@@ -61,7 +100,8 @@ function connect_to_chat_firebase(){
     var home = GetUrlValue("home");
     var away = GetUrlValue("away");
     var date = GetUrlValue("date");
-    var fb_new_chat_room = fb_instance.child('chatrooms').child(home + away + date);
+    var league = GetUrlValue("league");
+    var fb_new_chat_room = fb_instance.child('chatrooms').child(league + home + away + date);
     //var fb_new_chat_room = fb_instance.child('chatrooms').child(fb_chat_room_id);
     var fb_instance_users = fb_new_chat_room.child('users');
     fb_instance_stream = fb_new_chat_room.child('stream');
@@ -260,26 +300,57 @@ function display_msg(id, data){
      booButton.innerHTML = "BOO!";
      rating.innerHTML = 0;
      //rating.innerHTML = data.r;
+     document.cookie = "voted"+id+"=false";
 
      yeahButton.onclick = function() {
         var currID = yeahButton.id.substring(3);
-        var ratingElement = document.getElementById(currID);
-        var rating = parseInt(ratingElement.innerHTML);
-        var newRating = rating + 1;
-        var ratingString = newRating.toString() + currID;
-        fb_instance_stream.child(currID).update({r: ratingString});
-        ratingElement.innerHTML = (rating + 1).toString();
+        var cookieName = "voted" + currID + "=";
+        var cookies = document.cookie.split(';');
+        var cookieValue = "";
+        for (var i = 0; i < cookies.length; i++) {
+          var currCookie = cookies[i].trim();
+          if (currCookie.indexOf(cookieName) == 0) {
+            var cookieValue = currCookie.substring(cookieName.length, currCookie.length);
+          }
+        }
+
+        if (cookieValue === "false" || cookieValue === "down") {
+          var incrementVal = 1;
+          if (cookieValue === "down") incrementVal = 2;
+          var ratingElement = document.getElementById(currID);
+          var rating = parseInt(ratingElement.innerHTML);
+          var newRating = rating + incrementVal;
+          var ratingString = newRating.toString() + currID;
+          fb_instance_stream.child(currID).update({r: ratingString});
+          ratingElement.innerHTML = (rating + incrementVal).toString();
+          document.cookie = cookieName + "up";
+      }
 
      }
 
      booButton.onclick = function() {
         var currID = booButton.id.substring(3);
-        var ratingElement = document.getElementById(currID);
-        var rating = parseInt(ratingElement.innerHTML);
-        var newRating = rating - 1;
-        var ratingString = newRating.toString() + currID;
-        fb_instance_stream.child(currID).update({r: ratingString});
-        ratingElement.innerHTML = (rating - 1).toString();
+        var cookieName = "voted" + currID + "=";
+        var cookies = document.cookie.split(';');
+        var cookieValue = "";
+        for (var i = 0; i < cookies.length; i++) {
+          var currCookie = cookies[i].trim();
+          if (currCookie.indexOf(cookieName) == 0) {
+            var cookieValue = currCookie.substring(cookieName.length, currCookie.length);
+          }
+        }
+
+        if (cookieValue === "false" || cookieValue === "up") {
+          var incrementVal = 1;
+          if (cookieValue === "up") incrementVal = 2;
+          var ratingElement = document.getElementById(currID);
+          var rating = parseInt(ratingElement.innerHTML);
+          var newRating = rating - incrementVal;
+          var ratingString = newRating.toString() + currID;
+          fb_instance_stream.child(currID).update({r: ratingString});
+          ratingElement.innerHTML = (rating - incrementVal).toString();
+          document.cookie = cookieName + "down";
+        }
      }
      
      /*document.getElementById("conversation").appendChild(yeahButton);

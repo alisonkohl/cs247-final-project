@@ -3,12 +3,12 @@
 	<link href='http://fonts.googleapis.com/css?family=Graduate' rel='stylesheet' type='text/css'>
 </head>
 <body class="blue">
-	<h1>Today's NBA Games</h1>
+	<h1>Today's MLB Games</h1>
 	<ul>
 
 		{{#each games}}
 		  	<li>
-		  		<a href="/board?league={{league}}&id={{id}}&away={{away}}&home={{home}}&date={{date}}">{{away}} at {{home}}</a>
+		  		<a href="/board?league={{league}}&id={{id}}&away={{awayName}}&home={{homeName}}&date={{date}}">{{awayMarket}} {{awayName}} at {{homeMarket}} {{homeName}}</a>
 		  	</li>
 		{{/each}}
 

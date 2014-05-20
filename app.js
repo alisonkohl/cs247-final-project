@@ -12,6 +12,7 @@ var routes = require('./routes');
 var NBA = require('./routes/NBA');
 var board = require('./routes/board');
 var play = require('./routes/play');
+var MLB = require('./routes/MLB');
 
 var app = express();
 
@@ -46,6 +47,7 @@ app.get('/', routes.index);
 app.get('/NBA', NBA.loadGames);
 app.get('/board', board.displayBoard);
 app.get('/play', play.displayPlay);
+app.get('/MLB', MLB.loadGames);
 
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
