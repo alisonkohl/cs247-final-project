@@ -300,13 +300,21 @@ function display_msg(id, data){
      booButton.innerHTML = "BOO!";
      //rating.innerHTML = 0;
      var ratingStr = data.r;
-     if (ratingStr.charAt(0) === '-') {
-        ratingStr = ratingStr.substring(1);
-     }
-     var indexOfHyphen = ratingStr.indexOf("-");
-     var ratingNum = ratingStr.substring(0, indexOfHyphen);
+     console.log("ratingStr " + ratingStr);
+     if (ratingStr === 0) {
+        rating.innerHTML = 0;
+     } else {
+        var isNeg = false;
+       if (ratingStr.charAt(0) === '-') {
+          var isNeg = true;
+          ratingStr = ratingStr.substring(1);
+       }
+       var indexOfHyphen = ratingStr.indexOf("-");
+       var ratingNum = ratingStr.substring(0, indexOfHyphen);
 
-     rating.innerHTML = ratingNum;
+       if (isNeg === true) ratingNum = "-" + ratingNum;
+       rating.innerHTML = ratingNum;
+     }
      document.cookie = "voted"+id+"=false";
 
      yeahButton.onclick = function() {
