@@ -298,8 +298,15 @@ function display_msg(id, data){
 
      yeahButton.innerHTML = "YEAH!";
      booButton.innerHTML = "BOO!";
-     rating.innerHTML = 0;
-     //rating.innerHTML = data.r;
+     //rating.innerHTML = 0;
+     var ratingStr = data.r;
+     if (ratingStr.charAt(0) === '-') {
+        ratingStr = ratingStr.substring(1);
+     }
+     var indexOfHyphen = ratingStr.indexOf("-");
+     var ratingNum = ratingStr.substring(0, indexOfHyphen);
+
+     rating.innerHTML = ratingNum;
      document.cookie = "voted"+id+"=false";
 
      yeahButton.onclick = function() {
