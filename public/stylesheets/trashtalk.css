@@ -49,32 +49,75 @@ a:visited {
   background-color: #404040;
 }
 
+.blue {
+  background-color: #3F92D2;
+}
+
+#title {
+  padding-top: 8px;
+  padding-bottom: 5px;
+  font: 40px "Graduate", Helvetica, Arial, sans-serif;
+  color: #FFF;
+  text-align: center;
+}
 .red_glyph {
   color: #B80012;
 }
 
+.green_glyph {
+  color: #1E9E2D;
+}
+
 .video_approve {
   position: absolute;
-  width: 50%;
-  height: 70%;
-  top: 15%;
-  left: 25%;
+  width: 620px;
+  height: 550px;
+  top: 14%;
+  left:0;
+  right:0;
+  margin-left: auto;
+  margin-right: auto;
   background-color: #007241;
 }
 
 .video_approve video {
   position: absolute;
-  width: 80%;
-  left: 10%;
-  top: 5%;
+  width: 580px;
+  /*left: 10%;*/
+  left:0;
+  right:0;
+  margin-left: auto;
+  margin-right: auto;
+  top: 20px;
   opacity: 1.0;
 }
 
-.video_info {
-  font: 24px "Graduate", Helvetica, Arial, sans-serif;
+#approval_play {
+  position: absolute;
+  top: 464px;
+  width: 264px;
+  left:0;
+  right:0;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#rightdiv h4 {
+  padding: 4px;
+}
+
+.video_approve div {
+  position: absolute;
+  left:0;
+  right:0;
+  margin-left: auto;
+  margin-right: auto;
+  top: 502px;
+  width: 400px;
   text-align: center;
-  color: white;
-  width: 240px;
+}
+.video_approve button {
+  margin: 5px;
 }
 
 iframe {
@@ -115,13 +158,6 @@ iframe {
   background-color: #00AF64;
 }
 
-#conversation div {
-  width: 240px;
-  float: left;
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
 #rightdiv {
   width: 35%;
   height: 100%;
@@ -152,6 +188,39 @@ iframe {
   padding: 10px 10px 80px;
   overflow-y: scroll;
   height: 100%;
+  float: none;
+  text-align: center;
+}
+
+#conversation div {
+  width: 240px;
+  float: left;
+  margin: 10px;
+}
+
+#conversation div div {
+  margin: 0px;
+}
+
+/*#conversation div div div div {
+  width: 50px;
+  display: absolute;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+}*/
+
+.video_info {
+  font: 24px "Graduate", Helvetica, Arial, sans-serif;
+  text-align: center;
+  color: white;
+}
+
+.voting {
+  width: 240px;
+  text-align: center;
+  float: left;
 }
 
 #top {

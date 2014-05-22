@@ -51,7 +51,9 @@ $(document).ready(function(){
             $('#videoplaybackdiv').append("<audio id='audioplayback' src='"+audioURL+"'></audio>");
             var approvalPlayButton = document.createElement("button");
             approvalPlayButton.setAttribute("id", "approval_play");
-            approvalPlayButton.innerHTML = "Play";
+            approvalPlayButton.setAttribute("class", "btn btn-default btn-medium")
+
+            approvalPlayButton.innerHTML = "<span class='glyphicon glyphicon-play green_glyph'></span>&nbsp;Play";
 
             approvalPlayButton.onclick = function() {
               setTimeout(function(){
@@ -64,21 +66,27 @@ $(document).ready(function(){
 
             $('#videoplaybackdiv').append(approvalPlayButton);
 
+            var approveRejectDiv = document.createElement("div");
             var approveButton = document.createElement("button");
-            approveButton.innerHTML = "Approve";
+            approveButton.setAttribute("class", "btn btn-default btn-medium")
+            approveButton.innerHTML = "<span class='glyphicon glyphicon-ok green_glyph'></span>&nbsp;Post my TrashTalk";
             //approveButton.setAttribute("id", "approveButton");
             approveButton.onclick = function() {
               fb_instance_stream.push({m:username, v:videoBase64, a:base64, c: my_color, r: 0, '.priority':0});
               $('#videoplaybackdiv').remove();
             }
-            $('#videoplaybackdiv').append(approveButton);
+            approveRejectDiv.appendChild(approveButton);
+            //$('#videoplaybackdiv').append(approveButton);
 
             var rejectButton = document.createElement("button");
-            rejectButton.innerHTML = "Reject";
+            rejectButton.setAttribute("class", "btn btn-default btn-medium")
+            rejectButton.innerHTML = "<span class='glyphicon glyphicon-remove red_glyph'></span>&nbsp;Discard";
             rejectButton.onclick = function() {
               $('#videoplaybackdiv').remove();
             }
-            $('#videoplaybackdiv').append(rejectButton);
+            approveRejectDiv.appendChild(rejectButton);
+            //$('#videoplaybackdiv').append(rejectButton);
+            $('#videoplaybackdiv').append(approveRejectDiv);
             //add to onclick for accept
             //fb_instance_stream.push({m:username, v:videoBase64, a:base64, c: my_color, r: 0});
           });
@@ -303,6 +311,7 @@ function display_msg(id, data, divId){
     var yeahButton = document.createElement("button");
     var booButton = document.createElement("button");
     var rating = document.createElement("div");
+    var voting = document.createElement("div");
 
 
      /*yeahButton.setAttribute("float", "left");
@@ -313,6 +322,7 @@ function display_msg(id, data, divId){
      booButton.setAttribute("id", "boo" + id);
      rating.setAttribute("id", id);
      rating.setAttribute("class", "video_info");
+     voting.setAttribute("class", "voting");
 
      yeahButton.innerHTML = "YEAH!";
      booButton.innerHTML = "BOO!";
@@ -401,9 +411,13 @@ function display_msg(id, data, divId){
     rightVideoDiv.setAttribute("float", "right");
     rightVideoDiv.setAttribute("width", "50px");
     rightVideoDiv.appendChild(playButton);
-    rightVideoDiv.appendChild(yeahButton);
+    voting.appendChild(yeahButton);
+    voting.appendChild(rating);
+    voting.appendChild(booButton);
+    rightVideoDiv.appendChild(voting);
+    /*rightVideoDiv.appendChild(yeahButton);
     rightVideoDiv.appendChild(booButton);
-    rightVideoDiv.appendChild(rating);
+    rightVideoDiv.appendChild(rating);*/
     div.appendChild(rightVideoDiv);
    $("#"+divId).append(div);
 

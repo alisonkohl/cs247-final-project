@@ -24,7 +24,8 @@ exports.displayPlay = function(req, res){
 		});
 	} else if (league === "MLB") {
 		request({
-		  uri: "https://api.sportsdatallc.org/mlb-t4/pbp/" + id + ".xml?api_key=yb2jhdyd3jjjce5smhsj5f9w",
+		  //uri: "https://api.sportsdatallc.org/mlb-t4/pbp/" + id + ".xml?api_key=yb2jhdyd3jjjce5smhsj5f9w",
+		  uri: "https://api.sportsdatallc.org/mlb-t4/pbp/" + id + ".xml?api_key=axk6me7yhdhtzdthbvvyauvc",
 		  method: "GET",
 		}, function(error, response, body) {
 			var descriptions = [];
