@@ -110,7 +110,7 @@ function connect_to_chat_firebase(){
     //var fb_new_chat_room = fb_instance.child('chatrooms').child(fb_chat_room_id);
     var fb_instance_users = fb_new_chat_room.child('users');
     fb_instance_stream = fb_new_chat_room.child('stream');
-    fb_instance_top = fb_instance_stream.startAt(-1).limit(3);
+    fb_instance_top = fb_instance_top = fb_instance_stream.startAt().limit(5);
     my_color = "#"+((1<<24)*Math.random()|0).toString(16);
 
     // listen to events
@@ -138,6 +138,7 @@ function connect_to_chat_firebase(){
       console.log("rating for this id is: " + rating);
       if (isNeg === true) rating = "-" + rating;
       document.getElementById(id).innerHTML = rating;
+      fb_instance_top = fb_instance_stream.startAt().limit(5);
     });
 
     /*fb_instance_top.on("child_added", function(snapshot){
@@ -145,6 +146,8 @@ function connect_to_chat_firebase(){
       });*/
 
       fb_instance_top.on("child_changed", function(snapshot){
+        fb_instance_top = fb_instance_stream.startAt().limit(5);
+        console.log("testing did it change?");
         get_top_rated();
       });
 
@@ -356,6 +359,7 @@ function display_msg(id, data, divId){
           var ratingString = newRating.toString() + currID;
           fb_instance_stream.child(currID).update({r: ratingString});
           fb_instance_stream.child(currID).setPriority(newRating*-1);
+          fb_instance_top = fb_instance_stream.startAt().limit(5);
           ratingElement.innerHTML = (rating + incrementVal).toString();
           document.cookie = cookieName + "up";
       }
@@ -383,6 +387,7 @@ function display_msg(id, data, divId){
           var ratingString = newRating.toString() + currID;
           fb_instance_stream.child(currID).update({r: ratingString});
           fb_instance_stream.child(currID).setPriority(newRating*-1);
+          fb_instance_top = fb_instance_stream.startAt().limit(5);
           ratingElement.innerHTML = (rating - incrementVal).toString();
           document.cookie = cookieName + "down";
         }
