@@ -429,9 +429,12 @@ function get_top_rated(){
     for(var i = 0; i < arr.length; i++){
       var data = arr[i];
       var rating = arr[i].r;
-      var indexOfHyphen = rating.indexOf('-');
-      var id = rating.substring(indexOfHyphen);
-      display_msg(id, data, 'top');
+      console.log(rating.charAt(0));
+      if(rating.charAt(0) != '0' || rating.charAt(0) != '-'){
+        var indexOfHyphen = rating.indexOf('-');
+        var id = rating.substring(indexOfHyphen);
+        display_msg(id, data, 'top');
+      }
     }
   });
   
