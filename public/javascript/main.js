@@ -3,6 +3,7 @@ var fb_instance_stream;
 var ready = 0;
 var username;
 var my_color;
+var fb_instance_top;
 
 function GetUrlValue(VarSearch){
     var SearchString = window.location.search.substring(1);
@@ -22,8 +23,12 @@ $(document).ready(function(){
       if (ready == 2) {
         record_audio_and_video();
       }
+      $("#recordBtn").hide();
+      $("#stopButton").show();
     };
     $("#stopButton").click(function() {
+      $("#recordBtn").show();
+      $("#stopButton").hide();
       var videoBase64;
       var savedVideoURL;
       recordRTC_Video.stopRecording(function(videoURL) {
@@ -63,7 +68,7 @@ $(document).ready(function(){
             approveButton.innerHTML = "Approve";
             //approveButton.setAttribute("id", "approveButton");
             approveButton.onclick = function() {
-              fb_instance_stream.push({m:username, v:videoBase64, a:base64, c: my_color, r: 0});
+              fb_instance_stream.push({m:username, v:videoBase64, a:base64, c: my_color, r: 0, '.priority':0});
               $('#videoplaybackdiv').remove();
             }
             $('#videoplaybackdiv').append(approveButton);
@@ -105,6 +110,7 @@ function connect_to_chat_firebase(){
     //var fb_new_chat_room = fb_instance.child('chatrooms').child(fb_chat_room_id);
     var fb_instance_users = fb_new_chat_room.child('users');
     fb_instance_stream = fb_new_chat_room.child('stream');
+    fb_instance_top = fb_instance_stream.startAt(-1).limit(3);
     my_color = "#"+((1<<24)*Math.random()|0).toString(16);
 
     // listen to events
@@ -114,7 +120,7 @@ function connect_to_chat_firebase(){
     }); */
     fb_instance_stream.on("child_added",function(snapshot){
       var id = snapshot.name();
-      display_msg(id, snapshot.val());
+      display_msg(id, snapshot.val(), "conversation");
     });
 
     fb_instance_stream.on("child_changed", function(snapshot, prevChildName){
@@ -134,6 +140,14 @@ function connect_to_chat_firebase(){
       document.getElementById(id).innerHTML = rating;
     });
 
+    /*fb_instance_top.on("child_added", function(snapshot){
+        get_top_rated();
+      });*/
+
+      fb_instance_top.on("child_changed", function(snapshot){
+        get_top_rated();
+      });
+
     // block until username is answered
     console.log("before username prompt");
     username = window.prompt("Hi, please let me know what your name is");
@@ -151,6 +165,7 @@ function connect_to_chat_firebase(){
         $(this).val("");
       }
       });
+    get_top_rated();
     };
 
 function connect_webcam() {
@@ -192,7 +207,7 @@ function record_audio_and_video(){
     recordRTC_Audio.startRecording();
   }
 
-function display_msg(id, data){
+function display_msg(id, data, divId){
   //$("#conversation").append("<div class='msg' style='color:"+data.c+"'>"+data.m+"</div>");
   if(data.v){
     // for video element
@@ -277,7 +292,7 @@ function display_msg(id, data){
     if (data.a) {
       var audioSrc = URL.createObjectURL(base64_to_blob(data.a));
       audioSrc.type= "audio/wav";
-      $("#conversation").append("<audio id='audio" + id + "' src='"+audioSrc+"'></audio>");
+      $("#"+divId).append("<audio id='audio" + id + "' src='"+audioSrc+"'></audio>");
     }
 
 
@@ -340,6 +355,7 @@ function display_msg(id, data){
           var newRating = rating + incrementVal;
           var ratingString = newRating.toString() + currID;
           fb_instance_stream.child(currID).update({r: ratingString});
+          fb_instance_stream.child(currID).setPriority(newRating*-1);
           ratingElement.innerHTML = (rating + incrementVal).toString();
           document.cookie = cookieName + "up";
       }
@@ -366,6 +382,7 @@ function display_msg(id, data){
           var newRating = rating - incrementVal;
           var ratingString = newRating.toString() + currID;
           fb_instance_stream.child(currID).update({r: ratingString});
+          fb_instance_stream.child(currID).setPriority(newRating*-1);
           ratingElement.innerHTML = (rating - incrementVal).toString();
           document.cookie = cookieName + "down";
         }
@@ -388,9 +405,31 @@ function display_msg(id, data){
     rightVideoDiv.appendChild(booButton);
     rightVideoDiv.appendChild(rating);
     div.appendChild(rightVideoDiv);
-   $("#conversation").append(div);
+   $("#"+divId).append(div);
 
   }
+}
+
+function get_top_rated(){
+  $("#top").html("");
+  var topData;
+  var arr = [];
+  fb_instance_top.once('value', function(snapshot){
+    topData = snapshot.val();
+    console.log(topData);
+    for (var i in topData) {
+      arr.push(topData[i]);
+    }
+    console.log(arr.length + " length");
+    for(var i = 0; i < arr.length; i++){
+      var data = arr[i];
+      var rating = arr[i].r;
+      var indexOfHyphen = rating.indexOf('-');
+      var id = rating.substring(indexOfHyphen);
+      display_msg(id, data, 'top');
+    }
+  });
+  
 }
 
 function datauri_to_blob(dataURI,callback) {

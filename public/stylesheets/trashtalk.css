@@ -35,27 +35,39 @@ a:visited {
   color: white;
 }
 
-.red {
+.green {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #E30E0E;
+  background-color: #36D792;
 }
 
-.blue {
+.gray {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #192C80;
+  background-color: #404040;
+}
+
+.red_glyph {
+  color: #B80012;
 }
 
 .video_approve {
   position: absolute;
   width: 50%;
-  height: 50%;
-  top: 100px;
-  left: 50px;
-  background-color: white;
+  height: 70%;
+  top: 15%;
+  left: 25%;
+  background-color: #007241;
+}
+
+.video_approve video {
+  position: absolute;
+  width: 80%;
+  left: 10%;
+  top: 5%;
+  opacity: 1.0;
 }
 
 .video_info {
@@ -88,10 +100,19 @@ iframe {
 }
 
 #leftdiv {
-  width: 65%;
+  width: 64%;
   height: 100%;
   float: left;
-  background-color: #192C80;
+  /*background-color: #192C80;*/
+  background-color: #36D792;
+  overflow-y:hidden;
+}
+
+#border {
+  width: 1%;
+  height: 100%;
+  float: left;
+  background-color: #00AF64;
 }
 
 #conversation div {
@@ -105,7 +126,8 @@ iframe {
   width: 35%;
   height: 100%;
   float: right;
-  background-color: #E30E0E;
+  /*background-color: #E30E0E;*/
+  background-color: #404040;
   overflow-y:hidden;
 }
 
@@ -118,7 +140,7 @@ iframe {
 }
 
 #webcam_stream video {
-  border: 4px solid #ffffff;
+  border: 12px solid #00AF64;
   width: 80%;
 }
 
@@ -130,6 +152,19 @@ iframe {
   padding: 10px 10px 80px;
   overflow-y: scroll;
   height: 100%;
+}
+
+#top {
+  padding: 10px 10px 80px;
+  overflow-y: scroll;
+  height: 100%;
+}
+
+#top div {
+  width: 240px;
+  float: left;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 #submission {
   height: 25%;
