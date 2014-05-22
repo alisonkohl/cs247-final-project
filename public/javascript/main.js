@@ -251,7 +251,10 @@ function display_msg(id, data, divId){
     var stopButton = document.createElement("button");
     playButton.setAttribute("id", "play" + id);
     stopButton.setAttribute("id", "stop" + id);
-    playButton.innerHTML = "Play";
+    playButton.setAttribute("class", "btn btn-default btn-small");
+    
+    playButton.innerHTML = "<span class='glyphicon glyphicon-play green_glyph'></span>&nbsp;Play";
+    //playButton.innerHTML = "Play";
     stopButton.innerHTML = "Pause";
 
     playButton.onclick = function() {
@@ -323,12 +326,16 @@ function display_msg(id, data, divId){
 
      yeahButton.setAttribute("id", "yea" + id);
      booButton.setAttribute("id", "boo" + id);
+     yeahButton.setAttribute("class", "btn btn-default btn-small");
+     booButton.setAttribute("class", "btn btn-default btn-small");
      rating.setAttribute("id", id);
      rating.setAttribute("class", "video_info");
      voting.setAttribute("class", "voting");
 
-     yeahButton.innerHTML = "YEAH!";
-     booButton.innerHTML = "BOO!";
+    yeahButton.innerHTML = "<span class='glyphicon glyphicon-chevron-up green_glyph'></span>&nbsp;YEAH!";
+    booButton.innerHTML = "<span class='glyphicon glyphicon-chevron-down red_glyph'></span>&nbsp;BOO!";
+    // yeahButton.innerHTML = "YEAH!";
+    // booButton.innerHTML = "BOO!";
      //rating.innerHTML = 0;
      var ratingStr = data.r;
      console.log("ratingStr " + ratingStr);
