@@ -227,14 +227,20 @@ iframe {
   padding: 10px 10px 80px;
   overflow-y: scroll;
   height: 100%;
+  float: none;
+  text-align: center;
 }
 
 #top div {
   width: 240px;
   float: left;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin: 10px;
 }
+
+#top div div {
+  margin: 0px;
+}
+
 #submission {
   height: 25%;
   border-top: 2px solid #dcc;
