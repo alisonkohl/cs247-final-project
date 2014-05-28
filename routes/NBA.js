@@ -9,7 +9,8 @@ exports.loadGames = function(req, res){
 	if(dd<10) dd='0'+dd
 	if(mm<10) mm='0'+mm
 	request({
-	  uri: "http://api.sportsdatallc.org/nba-t3/games/"+yyyy+'/'+mm+'/'+dd+'/'+"schedule.xml?api_key=jenn2yh6bygetkxwavkpjwr2",
+	  //uri: "http://api.sportsdatallc.org/nba-t3/games/"+yyyy+'/'+mm+'/'+dd+'/'+"schedule.xml?api_key=jenn2yh6bygetkxwavkpjwr2",
+	  uri: "http://api.sportsdatallc.org/nba-t3/games/2014/05/27/schedule.xml?api_key=jenn2yh6bygetkxwavkpjwr2",
 	//uri: "http://api.sportsdatallc.org/nba-t3/games/2014/05/13/schedule.xml?api_key=jenn2yh6bygetkxwavkpjwr2",
 	  method: "GET",
 	}, function(error, response, body) {
