@@ -9,8 +9,7 @@ exports.loadGames = function(req, res){
 	if(dd<10) dd='0'+dd
 	if(mm<10) mm='0'+mm
 	request({
-	//uri: "https://api.sportsdatallc.org/mlb-t4/daily/event/" + yyyy + "/" + mm + "/" + dd + ".xml?api_key=axk6me7yhdhtzdthbvvyauvc",
-	uri: "https://api.sportsdatallc.org/mlb-t4/daily/event/2014/05/27.xml?api_key=axk6me7yhdhtzdthbvvyauvc",
+	uri: "https://api.sportsdatallc.org/mlb-t4/daily/event/" + yyyy + "/" + mm + "/" + dd + ".xml?api_key=axk6me7yhdhtzdthbvvyauvc",
 	  //uri: "https://api.sportsdatallc.org/mlb-t4/daily/event/" + yyyy + "/" + mm + "/" + dd + ".xml?api_key=yb2jhdyd3jjjce5smhsj5f9w",
 	//uri: "http://api.sportsdatallc.org/nba-t3/games/2014/05/13/schedule.xml?api_key=jenn2yh6bygetkxwavkpjwr2",
 	  method: "GET",

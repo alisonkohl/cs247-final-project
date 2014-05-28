@@ -149,6 +149,7 @@ iframe {
   /*background-color: #192C80;*/
   background-color: #36D792;
   overflow-y:hidden;
+  padding-bottom: 50px;
 }
 
 #border {
@@ -212,9 +213,11 @@ iframe {
 }*/
 
 .video_info {
-  font: 24px "Graduate", Helvetica, Arial, sans-serif;
+  font: 23px "Graduate", Helvetica, Arial, sans-serif;
   text-align: center;
   color: white;
+  overflow: hidden;
+  height: 38px;
 }
 
 .voting {
