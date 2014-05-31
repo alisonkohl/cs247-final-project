@@ -7,5 +7,12 @@
 
 <body class="gray" style="vertical-align:middle;">
 	<h6>Last Play:</h6>
-	<h6>{{play}}</h6>
+	<h6 id="currPlay">{{play}}</h6>
+	<script>
+		window.onload = function(){
+			var currPlay = document.getElementById("currPlay").innerHTML;
+			// this runs when the iframe has been loaded
+			parent.changePlay(currPlay);
+		}	
+	</script>
 </body>
