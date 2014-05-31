@@ -183,6 +183,21 @@ function connect_webcam() {
   // use a counter to make sure audoi and video are all ready
 
   // record audio
+  var allowTooltip = document.createElement("button");
+    allowTooltip.setAttribute("id", "allow");
+    allowTooltip.setAttribute("class", "btn btn-default");
+    allowTooltip.style.visibility = "hidden";
+    allowTooltip.setAttribute("data-container", "body");
+    allowTooltip.setAttribute("data-placement", "bottom");
+    allowTooltip.setAttribute("data-content", "Please allow TrashTalk to access your microphone and webcam.");
+    allowTooltip.style.position = "absolute";
+    allowTooltip.style.right = "60px";
+    allowTooltip.style.top = "0px";
+    allowTooltip.setAttribute("data-trigger", "manual");
+    allowTooltip.setAttribute("data-toggle", "popover"); 
+    $("#rightdiv").append(allowTooltip);
+    $("#allow").popover('show');
+
   navigator.getUserMedia({audio: true}, function(mediaStream) {
     $("#status").html("waiting..");
     window.recordRTC_Audio = RecordRTC(mediaStream);
@@ -190,13 +205,12 @@ function connect_webcam() {
   },function(failure){
     console.log(failure);
   });
-
   // record video
   navigator.getUserMedia({video: true}, function(mediaStream) {
-    $("#status").html("waiting..");
-    window.recordRTC_Video = RecordRTC(mediaStream,{type:"video"});
-    ready += 1;
-
+  $("#status").html("waiting..");
+  window.recordRTC_Video = RecordRTC(mediaStream,{type:"video"});
+  ready += 1;
+  $("#allow").popover('hide');
   var webcam_stream = document.getElementById('webcam_stream');
   var video = document.createElement('video');
   webcam_stream.innerHTML = "";
@@ -211,6 +225,7 @@ function connect_webcam() {
   },function(failure){
     console.log(failure);
   });
+
 }
 
 function record_audio_and_video(){
