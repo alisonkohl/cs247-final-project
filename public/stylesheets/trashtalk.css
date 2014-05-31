@@ -49,6 +49,12 @@ a:visited {
   background-color: #404040;
 }
 
+.games {
+  margin: 0;
+  padding: 0;
+  background-color: #404040;
+}
+
 .blue {
   background-color: #3F92D2;
 }
