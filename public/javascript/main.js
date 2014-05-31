@@ -19,6 +19,7 @@ function GetUrlValue(VarSearch){
 $(document).ready(function(){
    	connect_to_chat_firebase();
     connect_webcam();
+    var play = "";
     document.getElementById("recordBtn").onclick=function() {
       if (ready == 2) {
         record_audio_and_video();
@@ -27,6 +28,7 @@ $(document).ready(function(){
       $("#stopButton").show();
     };
     $("#stopButton").click(function() {
+      play = document.getElementById("playFromIframe").innerHTML;
       $("#recordBtn").show();
       $("#stopButton").hide();
       var videoBase64;
@@ -72,7 +74,8 @@ $(document).ready(function(){
             approveButton.innerHTML = "<span class='glyphicon glyphicon-ok green_glyph'></span>&nbsp;Post my TrashTalk";
             //approveButton.setAttribute("id", "approveButton");
             approveButton.onclick = function() {
-              fb_instance_stream.push({m:username, v:videoBase64, a:base64, c: my_color, r: 0, '.priority':0});
+              fb_instance_stream.push({m:username, v:videoBase64, a:base64, c: my_color, r: 0, p: play, '.priority':0});
+              console.log("play is: " + play);
               $('#videoplaybackdiv').remove();
             }
             approveRejectDiv.appendChild(approveButton);
