@@ -14,6 +14,33 @@
 </head>
 
 <body>
+	<div class="modal fade">
+	  <div class="modal-dialog">
+	    <div class="modal-content" id="name_modal">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h4 class="modal-title"><font color="black">Please enter your name and allegiance:</font></h4>
+	      </div>
+	      <center>
+	      <div class="modal-body">
+	        <input id = "inputName" type="text"></input>
+	        <br/><br/>
+	        <font color="black" size="5">
+		        <input type="radio" name="team" id="away" value={{gameInfo.away}}>&nbsp;{{gameInfo.away}}</input><br/><br/>
+		       	<input type="radio" name="team" id="home" value={{gameInfo.home}}>&nbsp;{{gameInfo.home}}</input><br/><br/>
+		       	<input type="radio" name="team" id="neutral" value="Neutral">&nbsp;Neutral</input>
+		    </font>
+
+	      </div>
+	      </center>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary" id="enter_name">OK</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
 	<div id = "playFromIframe" style="display: none;">None</div>
 	<script>
 		function changePlay(play) {
@@ -40,8 +67,26 @@
 	</div>
 	<div id="border"></div>
 	<div id="rightdiv" class="red">
-		<!--<iframe id="iframe" src="/play?id={{gameInfo.id}}"></iframe>-->
-		<h4>{{gameInfo.away}} at {{gameInfo.home}}</h4>
+		<div class="dropdown">
+		 	<a data-toggle="dropdown" href="#">
+				<h4>{{gameInfo.away}} at {{gameInfo.home}}
+					<span class="caret"></span>
+
+				</h4>
+			</a>
+		  	<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+			  {{#if NBA}}
+			  	{{#each games}}
+			  		<li role="presentation"><a role="menuitem" tabindex="-1" href="/board?league={{league}}&id={{id}}&away={{away}}&home={{home}}&date={{date}}">{{away}} at {{home}}</a></li>
+			  	{{/each}}
+			  {{else}}
+			  	{{#each games}}
+			  		<li role="presentation"><a role="menuitem" tabindex="-1" href="/board?league={{league}}&id={{id}}&away={{awayName}}&home={{homeName}}&date={{date}}">{{awayMarket}} {{awayName}} at {{homeMarket}} {{homeName}}</a></li>
+			  	{{/each}}
+			  {{/if}}
+		  	</ul>
+		 </div>
+
 		<div>
 			<iframe id="iframe" src="/play?id={{gameInfo.id}}&league={{gameInfo.league}}" frameBorder="0"></iframe>
 		</div>
@@ -63,20 +108,3 @@
 	</div>
 	<script src="javascript/bootstrap.min.js"></script>
 </body>
-
-
-
-<!--<body>
-	<h1>{{gameInfo.away}} at {{gameInfo.home}}</h1>
-
-	<div id="waiting">Connecting to chat server...</div>
-	<div id="second_counter"></div>
-	<div id="conversation"></div>
-	<div id="submission">
-		<input type="text" placeholder="say something..">
-		<button type="button" id="recordBtn">Talk Trash!</button>
-		<button type="button" id="stopButton" >Ease up</button>
-	</div>
-	<div id="webcam_stream"></div>
-	<div id="video_container"></div>
-</body>-->

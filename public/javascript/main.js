@@ -4,6 +4,7 @@ var ready = 0;
 var username;
 var my_color;
 var fb_instance_top;
+var allegiance;
 
 function GetUrlValue(VarSearch){
     var SearchString = window.location.search.substring(1);
@@ -74,7 +75,7 @@ $(document).ready(function(){
             approveButton.innerHTML = "<span class='glyphicon glyphicon-ok green_glyph'></span>&nbsp;Post my TrashTalk";
             //approveButton.setAttribute("id", "approveButton");
             approveButton.onclick = function() {
-              fb_instance_stream.push({m:username, v:videoBase64, a:base64, c: my_color, r: 0, p: play, '.priority':0});
+              fb_instance_stream.push({m:username, v:videoBase64, a:base64, c: my_color, r: 0, p: play, t: allegiance, '.priority':0});
               console.log("play is: " + play);
               $('#videoplaybackdiv').remove();
             }
@@ -164,11 +165,26 @@ function connect_to_chat_firebase(){
 
     // block until username is answered
     console.log("before username prompt");
-    username = window.prompt("Hi, please let me know what your name is");
-    if(!username){
-      username = "anonymous"+Math.floor(Math.random()*1111);
-    }
-    fb_instance_users.push({ name: username,c: my_color});
+    $(".modal").modal('show');
+    $("#enter_name").click(function(){
+      username = document.getElementById("inputName").value;
+      $(".modal").modal('hide');
+      console.log(username);
+      //username = window.prompt("Hi, please let me know what your name is");
+      if(!username){
+        username = "anonymous"+Math.floor(Math.random()*1111);
+      }
+
+      if (document.getElementById('away').checked) {
+        allegiance = away;
+      } else if (document.getElementById('home').checked) {
+        allegiance = home;
+      } else {
+        allegiance = "Neutral";
+      }
+
+      fb_instance_users.push({ name: username,c: my_color});
+    });
 
     // bind submission box
     var text;
@@ -237,8 +253,11 @@ function record_audio_and_video(){
   }
 
 function display_msg(id, data, divId){
+  var play = data.p;
+  if (play === "No current play") play = "Game not in session";
   //$("#conversation").append("<div class='msg' style='color:"+data.c+"'>"+data.m+"</div>");
   if(data.v){
+    console.log("team is: " + data.t);
     // for video element
     
     console.log("id is: " + id);
@@ -263,7 +282,16 @@ function display_msg(id, data, divId){
 
      //document.getElementById("conversation").appendChild(video);
 
-    
+    var playMarker = document.createElement("button");
+    playMarker.innerHTML = "<span class='glyphicon glyphicon-info-sign'></span>";
+    playMarker.setAttribute("class", "btn btn-default");
+    playMarker.setAttribute("data-toggle", "tooltip");
+    playMarker.setAttribute("data-placement", "right");
+    playMarker.setAttribute("data-container", "body");
+    playMarker.setAttribute("title", play);
+    playMarker.style.position = "absolute";
+    playMarker.style.left = "10px";
+    playMarker.style.bottom = "118px";
 
     var playButton = document.createElement("button");
     var stopButton = document.createElement("button");
@@ -303,14 +331,16 @@ function display_msg(id, data, divId){
 
     var usernameDiv = document.createElement("div");
     usernameDiv.style.color = "white";
-    usernameDiv.innerHTML = data.m;
+    usernameDiv.innerHTML = data.m + "<br/>" + "<font size='2'>" + data.t + "</font>";
     usernameDiv.setAttribute("class", "video_info")
     usernameDiv.setAttribute("width", "240");
     usernameDiv.style.paddingLeft="0px";
     usernameDiv.style.paddingRight="0px";
 
+
     div.appendChild(usernameDiv);
     div.appendChild(video);
+    div.appendChild(playMarker);
     //div.appendChild(playButton);
 
     /*var buttonsTable = document.createElement("table");
@@ -452,6 +482,7 @@ function display_msg(id, data, divId){
    $("#"+divId).append(div);
 
   }
+  $("[data-toggle=tooltip]").tooltip();
 }
 
 function get_top_rated(){

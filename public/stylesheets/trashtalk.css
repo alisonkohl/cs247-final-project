@@ -74,6 +74,10 @@ a:visited {
   color: #1E9E2D;
 }
 
+.white_glyph {
+  color: #FFFFFF;
+}
+
 .video_approve {
   position: absolute;
   width: 620px;
@@ -203,6 +207,7 @@ iframe {
   width: 240px;
   float: left;
   margin: 10px;
+  position: relative;
 }
 
 #conversation div div {
@@ -223,7 +228,7 @@ iframe {
   text-align: center;
   color: white;
   overflow: hidden;
-  height: 38px;
+  height: 50px;
 }
 
 .voting {
