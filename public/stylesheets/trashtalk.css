@@ -65,6 +65,7 @@ a:visited {
   font: 40px "Graduate", Helvetica, Arial, sans-serif;
   color: #FFF;
   text-align: center;
+  border-bottom: 8px solid #145689;
 }
 .red_glyph {
   color: #B80012;
@@ -213,7 +214,6 @@ iframe {
 #conversation div div {
   margin: 0px;
 }
-
 /*#conversation div div div div {
   width: 50px;
   display: absolute;
@@ -249,6 +249,7 @@ iframe {
   width: 240px;
   float: left;
   margin: 10px;
+  position: relative;
 }
 
 #top div div {

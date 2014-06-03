@@ -291,7 +291,7 @@ function display_msg(id, data, divId){
     playMarker.setAttribute("title", play);
     playMarker.style.position = "absolute";
     playMarker.style.left = "10px";
-    playMarker.style.bottom = "118px";
+    playMarker.style.bottom = "128px";
 
     var playButton = document.createElement("button");
     var stopButton = document.createElement("button");
